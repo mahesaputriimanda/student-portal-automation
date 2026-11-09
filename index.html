@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal | Sistem Informasi</title>
+  <style>
+    :root { --navy:#16324f; --blue:#2563eb; --pale:#eff6ff; --ink:#172033; --muted:#64748b; --line:#e2e8f0; --white:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:#f4f7fb; }
+    button, input { font:inherit; }
+    .page { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:28px 16px; }
+    .login-card { width:min(100%,430px); background:var(--white); border:1px solid var(--line); border-radius:18px; padding:34px; box-shadow:0 18px 50px rgba(15,23,42,.08); }
+    .brand { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
+    .brand-mark { width:46px; height:46px; display:grid; place-items:center; border-radius:13px; background:var(--navy); color:white; font-weight:800; font-size:20px; }
+    .brand strong { display:block; font-size:17px; }
+    .brand small { color:var(--muted); }
+    h1 { margin:0 0 8px; font-size:26px; }
+    .subtitle { color:var(--muted); margin:0 0 25px; line-height:1.5; }
+    label { display:block; font-weight:700; font-size:14px; margin:17px 0 8px; }
+    input { width:100%; border:1px solid #cbd5e1; border-radius:9px; padding:13px 14px; outline:none; background:#fff; }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+    .primary { width:100%; border:0; border-radius:9px; background:var(--blue); color:#fff; font-weight:700; padding:14px; margin-top:22px; cursor:pointer; }
+    .primary:hover { background:#1d4ed8; }
+    .error { display:none; margin-top:15px; padding:12px; border-radius:9px; background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; font-size:14px; }
+    .hint { margin-top:22px; padding:13px; background:var(--pale); border-radius:9px; color:#334155; font-size:12px; line-height:1.7; }
+    .hint strong { color:var(--navy); }
+    .app { min-height:100vh; display:none; }
+    header { background:var(--navy); color:#fff; padding:17px 5%; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+    header .brand { margin:0; }
+    header .brand small { color:#cbd5e1; }
+    .logout { border:1px solid rgba(255,255,255,.5); color:#fff; background:transparent; padding:9px 14px; border-radius:8px; cursor:pointer; }
+    main { width:min(1100px,90%); margin:34px auto; }
+    .welcome { margin-bottom:24px; }
+    .welcome p { color:var(--muted); margin-top:7px; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .tile, .panel { background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px; }
+    .tile span { color:var(--muted); font-size:13px; }
+    .tile strong { display:block; font-size:25px; margin-top:9px; color:var(--navy); }
+    .panel { margin-top:20px; }
+    .panel h2 { margin:0 0 15px; font-size:18px; }
+    .profile-row { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line); gap:15px; }
+    .profile-row:last-child { border-bottom:0; }
+    .profile-row span { color:var(--muted); }
+    .status { display:inline-block; background:#dcfce7; color:#166534; border-radius:30px; padding:5px 10px; font-size:12px; font-weight:700; }
+    footer { text-align:center; color:var(--muted); font-size:12px; padding:25px; }
+    @media(max-width:700px) { .grid { grid-template-columns:1fr; } header { padding:15px 5%; } .login-card { padding:25px; } .profile-row { flex-direction:column; gap:5px; } }
+  </style>
+</head>
+<body>
+  <section class="page" id="loginPage">
+    <div class="login-card">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div><strong>Student Portal</strong><small>Sistem Informasi Mahasiswa</small></div>
+      </div>
+      <h1>Selamat datang</h1>
+      <p class="subtitle">Silakan masuk menggunakan akun mahasiswa untuk melanjutkan.</p>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="Masukkan username" autocomplete="username">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Masukkan password" autocomplete="current-password">
+        <button class="primary" id="loginButton" type="submit">Masuk</button>
+        <div class="error" id="loginError" role="alert" aria-live="polite">Username atau password tidak sesuai. Silakan coba kembali.</div>
+      </form>
+      <div class="hint">
+        <strong>Akun demo untuk pengujian</strong><br>
+        Username: mahasiswa<br>
+        Password: SIF2026!
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="dashboardPage">
+    <header>
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div><strong>Student Portal</strong><small>Sistem Informasi Mahasiswa</small></div>
+      </div>
+      <button class="logout" id="logoutButton" type="button">Logout</button>
+    </header>
+    <main>
+      <div class="welcome">
+        <h1 id="dashboardTitle">Dashboard Mahasiswa</h1>
+        <p id="welcomeMessage">Selamat datang, mahasiswa. Kamu berhasil masuk ke Student Portal.</p>
+      </div>
+      <div class="grid">
+        <div class="tile"><span>Status Akademik</span><strong>Aktif</strong></div>
+        <div class="tile"><span>Program Studi</span><strong>Sistem Informasi</strong></div>
+        <div class="tile"><span>Tahun Akademik</span><strong>2026/2027</strong></div>
+      </div>
+      <section class="panel" id="profilePanel">
+        <h2>Profil Mahasiswa</h2>
+        <div class="profile-row"><span>Nama</span><strong>Mahasiswa Demo</strong></div>
+        <div class="profile-row"><span>Program Studi</span><strong>Sistem Informasi</strong></div>
+        <div class="profile-row"><span>Username</span><strong>mahasiswa</strong></div>
+        <div class="profile-row"><span>Status</span><strong class="status">Aktif</strong></div>
+      </section>
+    </main>
+    <footer>Student Portal — Website simulasi untuk tugas Automation Testing</footer>
+  </section>
+
+  <script>
+    const validUsername = "mahasiswa";
+    const validPassword = "SIF2026!";
+
+    const loginPage = document.getElementById("loginPage");
+    const dashboardPage = document.getElementById("dashboardPage");
+    const loginForm = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+
+    function showDashboard() {
+      loginPage.style.display = "none";
+      dashboardPage.style.display = "block";
+    }
+
+    function showLogin() {
+      dashboardPage.style.display = "none";
+      loginPage.style.display = "flex";
+      loginForm.reset();
+      loginError.style.display = "none";
+    }
+
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (username === validUsername && password === validPassword) {
+        loginError.style.display = "none";
+        showDashboard();
+      } else {
+        loginError.style.display = "block";
+      }
+    });
+
+    document.getElementById("logoutButton").addEventListener("click", showLogin);
+  </script>
+</body>
+</html>
